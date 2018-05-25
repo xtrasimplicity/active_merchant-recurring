@@ -99,6 +99,6 @@ RSpec.configure do |config|
 =end
 end
 
-require 'activemerchant'
+require 'active_merchant'
 require 'active_merchant/recurring'
 require 'byebug'
