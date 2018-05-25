@@ -98,3 +98,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+require 'activemerchant'
+require 'active_merchant/recurring'
+require 'byebug'
