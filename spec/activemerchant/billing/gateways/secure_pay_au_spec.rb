@@ -72,7 +72,7 @@ RSpec.describe ActiveMerchant::Billing::SecurePayAuGateway do
 
         context 'when 0' do
           it 'raises ActiveMerchant::Recurring::InvalidNumberOfPaymentsError' do
-            expect { gateway.recurring(payment_interval, start_date, nil, amount) }.to raise_error(ActiveMerchant::Recurring::InvalidNumberOfPaymentsError)
+            expect { gateway.recurring(payment_interval, start_date, 0, amount) }.to raise_error(ActiveMerchant::Recurring::InvalidNumberOfPaymentsError)
           end
         end
 
