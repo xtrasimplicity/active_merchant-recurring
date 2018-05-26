@@ -13,7 +13,7 @@ module ActiveMerchant::Recurring
       def recurring(payment_interval, start_date, number_of_payments, amount)
         raise InvalidPaymentIntervalError unless supported_payment_intervals.has_key?(payment_interval)
         raise InvalidStartDateError unless start_date_valid?(start_date)
-        raise InvalidNumberOfPaymentsError unless number_of_payments.to_i >= 1
+        raise InvalidNumberOfPaymentsError unless (number_of_payments.to_s =~ /\A[0-9]+\z/ && number_of_payments.to_i >= 1) 
       end
 
       private

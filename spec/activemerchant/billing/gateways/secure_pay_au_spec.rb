@@ -76,6 +76,12 @@ RSpec.describe ActiveMerchant::Billing::SecurePayAuGateway do
           end
         end
 
+        context 'when it includes a decimal point' do
+          it 'raises ActiveMerchant::Recurring::InvalidNumberOfPaymentsError' do
+            expect { gateway.recurring(payment_interval, start_date, 1.5, amount) }.to raise_error(ActiveMerchant::Recurring::InvalidNumberOfPaymentsError)
+          end
+        end
+
         context 'when greater than or equal to 1' do
           it 'does not raise an error' do
             expect { gateway.recurring(payment_interval, start_date, 1, amount) }.not_to raise_error
