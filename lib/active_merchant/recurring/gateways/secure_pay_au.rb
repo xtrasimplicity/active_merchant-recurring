@@ -10,7 +10,8 @@ module ActiveMerchant::Recurring
       # @param start_date [String] The date, in Ymd format, in which the first payment should be charged.
       # @param number_of_payments [Fixnum] The number of payments to make before the subscription ends.
       # @param amount [Numeric] The amount to charge.
-      def recurring(payment_interval, start_date, number_of_payments, amount)
+      # @param credit_card [ActiveMerchant::Billing::CreditCard]
+      def recurring(payment_interval, start_date, number_of_payments, amount, credit_card)
         raise InvalidPaymentIntervalError unless supported_payment_intervals.has_key?(payment_interval)
         raise InvalidStartDateError unless start_date_valid?(start_date)
         raise InvalidNumberOfPaymentsError unless (number_of_payments.to_s =~ /\A[0-9]+\z/ && number_of_payments.to_i >= 1) 

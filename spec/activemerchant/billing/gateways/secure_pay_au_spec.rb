@@ -24,7 +24,7 @@ RSpec.describe ActiveMerchant::Billing::SecurePayAuGateway do
       describe 'payment intervals' do
         context 'when not set' do
           it 'raises ActiveMerchant::Recurring::InvalidPaymentIntervalError' do
-            expect { gateway.recurring(nil, start_date, number_of_payments, amount) }.to raise_error(ActiveMerchant::Recurring::InvalidPaymentIntervalError)
+            expect { gateway.recurring(nil, start_date, number_of_payments, amount, credit_card) }.to raise_error(ActiveMerchant::Recurring::InvalidPaymentIntervalError)
           end
         end
 
@@ -33,32 +33,32 @@ RSpec.describe ActiveMerchant::Billing::SecurePayAuGateway do
 
           it 'raises ActiveMerchant::Recurring::InvalidPaymentIntervalError' do
             supported_payment_intervals.each do |interval, _|
-              expect { gateway.recurring(interval, start_date, number_of_payments, amount) }.not_to raise_error
+              expect { gateway.recurring(interval, start_date, number_of_payments, amount, credit_card) }.not_to raise_error
             end
 
-            expect { gateway.recurring(:daily, start_date, number_of_payments, amount) }.to raise_error(ActiveMerchant::Recurring::InvalidPaymentIntervalError)
+            expect { gateway.recurring(:daily, start_date, number_of_payments, amount, credit_card) }.to raise_error(ActiveMerchant::Recurring::InvalidPaymentIntervalError)
           end
         end
       end
 
-      context 'start date' do
+      describe 'start date' do
         context 'when not set' do
           it 'raises ActiveMerchant::Recurring::InvalidStartDateError' do
-            expect { gateway.recurring(payment_interval, nil, number_of_payments, amount) }.to raise_error(ActiveMerchant::Recurring::InvalidStartDateError)
+            expect { gateway.recurring(payment_interval, nil, number_of_payments, amount, credit_card) }.to raise_error(ActiveMerchant::Recurring::InvalidStartDateError)
           end
         end
 
         context 'when not in Ymd format' do
           it 'raises ActiveMerchant::Recurring::InvalidStartDateError' do
             ['01012020', '1234567890', '123', '12Mar16'].each do |invalid_date|
-              expect { gateway.recurring(payment_interval, invalid_date, number_of_payments, amount) }.to raise_error(ActiveMerchant::Recurring::InvalidStartDateError), "#{invalid_date} was accepted as a valid start date, but it isn't in Ymd format."
+              expect { gateway.recurring(payment_interval, invalid_date, number_of_payments, amount, credit_card) }.to raise_error(ActiveMerchant::Recurring::InvalidStartDateError), "#{invalid_date} was accepted as a valid start date, but it isn't in Ymd format."
             end
           end
         end
 
         context 'when in Ymd format' do
           it 'does not raise an error' do
-            expect { gateway.recurring(payment_interval, '20200101', number_of_payments, amount) }.not_to raise_error
+            expect { gateway.recurring(payment_interval, '20200101', number_of_payments, amount, credit_card) }.not_to raise_error
           end
         end
       end
@@ -66,25 +66,27 @@ RSpec.describe ActiveMerchant::Billing::SecurePayAuGateway do
       describe 'number of payments' do
         context 'when not set' do
           it 'raises ActiveMerchant::Recurring::InvalidNumberOfPaymentsError' do
-          expect { gateway.recurring(payment_interval, start_date, nil, amount) }.to raise_error(ActiveMerchant::Recurring::InvalidNumberOfPaymentsError)
+          expect { gateway.recurring(payment_interval, start_date, nil, amount, credit_card) }.to raise_error(ActiveMerchant::Recurring::InvalidNumberOfPaymentsError)
           end
         end
 
         context 'when 0' do
           it 'raises ActiveMerchant::Recurring::InvalidNumberOfPaymentsError' do
-            expect { gateway.recurring(payment_interval, start_date, 0, amount) }.to raise_error(ActiveMerchant::Recurring::InvalidNumberOfPaymentsError)
+            expect { gateway.recurring(payment_interval, start_date, 0, amount, credit_card) }.to raise_error(ActiveMerchant::Recurring::InvalidNumberOfPaymentsError)
           end
         end
 
         context 'when it includes a decimal point' do
           it 'raises ActiveMerchant::Recurring::InvalidNumberOfPaymentsError' do
-            expect { gateway.recurring(payment_interval, start_date, 1.5, amount) }.to raise_error(ActiveMerchant::Recurring::InvalidNumberOfPaymentsError)
+            expect { gateway.recurring(payment_interval, start_date, 1.5, amount, credit_card) }.to raise_error(ActiveMerchant::Recurring::InvalidNumberOfPaymentsError)
           end
         end
 
         context 'when greater than or equal to 1' do
           it 'does not raise an error' do
-            expect { gateway.recurring(payment_interval, start_date, 1, amount) }.not_to raise_error
+            expect { gateway.recurring(payment_interval, start_date, 1, amount, credit_card) }.not_to raise_error
+          end
+        end
           end
         end
       end
